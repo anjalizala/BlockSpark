@@ -3,8 +3,6 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from database import sessionLocal
 from jose import jwt, JWTError
-from models import User
-from auth import decode_access_token
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -36,13 +34,4 @@ def admin_endpoint(current_user: dict = Depends(get_current_user)):
     return {"message": f"Hello, {current_user['name']}! You are an admin."}
 
 
-# from fastapi import Depends, HTTPException
-# from sqlalchemy.orm import Session
-# from app.database import get_db
-# from app.auth import decode_jwt_token  # Helper to decode JWT token
 
-# def is_admin(token: str = Depends(decode_jwt_token), db: Session = Depends(get_db)):
-#     user = db.query(models.User).filter(models.User.email == token["sub"]).first()
-#     if not user or user.type != "admin":
-#         raise HTTPException(status_code=403, detail="Access forbidden")
-#     return user
