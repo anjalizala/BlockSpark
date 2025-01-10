@@ -2,9 +2,9 @@ from fastapi import Depends, HTTPException, status , APIRouter
 from sqlalchemy.orm import Session
 from database import get_db, SessionLocal
 from models import User
-from schemas import UserCreate, Token, UserOut
+from schemas import UserCreate, UserOut
 from fastapi.security import OAuth2PasswordRequestForm , OAuth2PasswordRequestForm
-from auth import get_user, get_password_hash, get_current_user, create_access_token, authenticate_user
+from auth import get_password_hash, get_current_user, create_access_token, authenticate_user
 
 router = APIRouter()
 
@@ -46,7 +46,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     else:
         role = "user"
     access_token = create_access_token({"sub": user_form.username, "role": role})
-    return { "access_token": access_token, "token_type": "bearer","message": "Login Successful", "role": role}
+    return {"access_token": access_token, "token_type": "bearer","message": "Login Successful", "role": role}
         
 @router.get("/users/me", response_model = UserOut,  tags=['User'])
 def read_users_me(current_user: User = Depends(get_current_user)):
