@@ -25,13 +25,12 @@ class Cart(Base):
     __tablename__ = "carts"
     id =Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    book_id = Column(Integer, ForeignKey("books.id"))
+    book_id = Column(Integer, ForeignKey("books.id", ondelete= "CASCADE"))
     quantity = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=datetime.now)
 
 class Order(Base):
     __tablename__ = "orders"
-
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     total_price = Column(Float, nullable=False)
