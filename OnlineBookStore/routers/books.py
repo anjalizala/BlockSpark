@@ -23,6 +23,28 @@ def create_book(
     
     # Admin is allowed to create books
     new_book = models.Book(**book.dict())
+    
+    if not new_book.title:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Title is required")
+    
+    if not new_book.author:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Author Name is required")
+    
+    if not new_book.price:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Price is required")
+    
+    if not new_book.quantity_available:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Quantity is required")
+    
+    if new_book.title.isdigit():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please enter valid Book Name")
+    
+    for char in new_book.author:
+        if not (char.isalpha()):  
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please enter valid author name")
+    # if new_book.author.isdigit():
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please enter valid author name")
+    
     db.add(new_book)
     db.commit()
     db.refresh(new_book)
@@ -46,6 +68,8 @@ def delete_book(id: int, db: Session = Depends(get_db),current_user: models.User
             detail="Only admins can create books.",
         )
     db_book = db.query(Book).filter(Book.id == id).first()
+    if not db_book:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Book Not Found")
     db.delete(db_book)
     db.commit()
     return {"message": "Book deleted Successfully"}
