@@ -1,0 +1,10 @@
+{
+    "builds": [{
+        "src": "OnlineBookStore/main.py",
+        "use": "@vercel/python"
+    }],
+    "routes": [{
+        "src": "/(.*)",
+        "des": "OnlineBookStore/main.py"
+    }]
+}
