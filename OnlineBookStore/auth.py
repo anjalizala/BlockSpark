@@ -16,7 +16,7 @@ ACCESS_TOKEN_EXPIRE_DAYS= 2
 #password 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-#Authantication
+#Authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 #verify the password matches a hased password
@@ -72,9 +72,3 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     user.role = role
     return user
 
-# def decode_access_token(token: str):
-#     try:
-#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-#         return payload
-#     except JWTError:
-#         return None
